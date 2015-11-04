@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -37,7 +38,7 @@ public class TestBasicIR {
 	}
 
 	@Test
-	public void testSearch() {
+	public void testLinearSearch() {
 		// Testen, ob lineare Suche ein Ergebnis liefert:
 
 		System.out.println();
@@ -47,6 +48,36 @@ public class TestBasicIR {
 
 		query = "Brutus";
 		Set<Integer> result = linear.search(query);
+		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
+		System.out.println("Ergebnis für " + query + ": " + result);
+
+		query = "Caesar";
+		result = linear.search(query);
+		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
+		System.out.println("Ergebnis für " + query + ": " + result);
+
+		query = "Brutus Caesar";
+		Set<Integer> result2 = linear.search(query);
+		assertTrue("Ergebnis-Set sollte größer sein als bei einzelnem Term",
+				result2.size() >= result.size());
+		System.out.println("Ergebnis für " + query + ": " + result2);
 	}
+	
+	@Ignore
+	@Test
+	public void testMatrixSearch() {
+		// Testen, ob Suche in Term-Dokument-Matrix ein Ergebnis liefert:
+
+		System.out.println();
+		System.out.println("Term-Dokument-Matrix:");
+		System.out.println("-------------------");
+		TermDokumentMatrix matrix = new TermDokumentMatrix(corpus);
+
+		query = "Brutus Caesar";
+		Set<Integer> result = matrix.search(query);
+		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
+		System.out.println("Ergebnis für " + query + ": " + result);
+	}
+
 
 }
