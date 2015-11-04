@@ -20,6 +20,7 @@ public class TestBasicIR {
 
 	private static Corpus corpus;
 	private String query;
+	private InformationRetrieval ir;
 
 	@BeforeClass
 	public static void setUp() throws Exception {
@@ -44,26 +45,14 @@ public class TestBasicIR {
 		System.out.println();
 		System.out.println("Lineare Suche:");
 		System.out.println("-------------------");
-		LinearSearch linear = new LinearSearch(corpus);
-
-		query = "Brutus";
-		Set<Integer> result = linear.search(query);
-		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
-		System.out.println("Ergebnis für " + query + ": " + result);
-
-		query = "Caesar";
-		result = linear.search(query);
-		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
-		System.out.println("Ergebnis für " + query + ": " + result);
+		ir = new LinearSearch(corpus);
 
 		query = "Brutus Caesar";
-		Set<Integer> result2 = linear.search(query);
-		assertTrue("Ergebnis-Set sollte größer sein als bei einzelnem Term",
-				result2.size() >= result.size());
-		System.out.println("Ergebnis für " + query + ": " + result2);
+		Set<Integer> result = ir.search(query);
+		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
+		System.out.println("Ergebnis für " + query + ": " + result);
 	}
 	
-	@Ignore
 	@Test
 	public void testMatrixSearch() {
 		// Testen, ob Suche in Term-Dokument-Matrix ein Ergebnis liefert:
@@ -71,10 +60,10 @@ public class TestBasicIR {
 		System.out.println();
 		System.out.println("Term-Dokument-Matrix:");
 		System.out.println("-------------------");
-		TermDokumentMatrix matrix = new TermDokumentMatrix(corpus);
+		ir = new TermDokumentMatrix(corpus);
 
 		query = "Brutus Caesar";
-		Set<Integer> result = matrix.search(query);
+		Set<Integer> result = ir.search(query);
 		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
 		System.out.println("Ergebnis für " + query + ": " + result);
 	}
