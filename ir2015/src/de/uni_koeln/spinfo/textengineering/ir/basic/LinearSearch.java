@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class LinearSearch {
+public class LinearSearch implements InformationRetrieval{
 
 	private List<String> works;
 
