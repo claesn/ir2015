@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -65,8 +64,11 @@ public class TestBasicIR {
 		query = "Brutus Caesar";
 		Set<Integer> result = ir.search(query);
 		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
-		System.out.println("Ergebnis für " + query + ": " + result);
-	}
+		System.out.println("OR-Ergebnis für " + query + ": " + result);
 
+		result = ((TermDokumentMatrix) ir).booleanSearch(query);
+		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
+		System.out.println("AND-Ergebnis für " + query + ": " + result);
+	}
 
 }
