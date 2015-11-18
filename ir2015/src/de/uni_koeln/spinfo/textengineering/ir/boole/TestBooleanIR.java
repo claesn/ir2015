@@ -32,6 +32,25 @@ public class TestBooleanIR {
 	}
 
 	@Test
+	public void testMatrixSearch() {
+		// Testen, ob Suche in Term-Dokument-Matrix ein Ergebnis liefert:
+
+		System.out.println();
+		System.out.println("Term-Dokument-Matrix:");
+		System.out.println("-------------------");
+		ir = new TermDokumentMatrix(corpus);
+
+		query = "Brutus Caesar";
+		Set<Integer> result = ir.search(query);
+		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
+		System.out.println("OR-Ergebnis für " + query + ": " + result);
+
+		result = ((TermDokumentMatrix) ir).booleanSearch(query);
+		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
+		System.out.println("AND-Ergebnis für " + query + ": " + result);
+	}
+
+	@Test
 	public void testInvertedIndex() {
 		// Testen, ob lineare Suche ein Ergebnis liefert:
 		System.out.println();

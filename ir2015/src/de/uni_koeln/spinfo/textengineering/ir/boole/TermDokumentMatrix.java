@@ -1,4 +1,4 @@
-package de.uni_koeln.spinfo.textengineering.ir.basic;
+package de.uni_koeln.spinfo.textengineering.ir.boole;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import de.uni_koeln.spinfo.textengineering.ir.basic.Corpus;
+import de.uni_koeln.spinfo.textengineering.ir.basic.InformationRetrieval;
 
 public class TermDokumentMatrix implements InformationRetrieval {
 
