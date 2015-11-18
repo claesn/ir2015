@@ -1,7 +1,6 @@
 package de.uni_koeln.spinfo.textengineering.ir.boole;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,11 +10,13 @@ import java.util.TreeSet;
 
 import de.uni_koeln.spinfo.textengineering.ir.basic.Corpus;
 import de.uni_koeln.spinfo.textengineering.ir.basic.InformationRetrieval;
+import de.uni_koeln.spinfo.textengineering.ir.preprocess.Preprocessor;
 
 public class InvertedIndex implements InformationRetrieval {
 
 	// der invertierte Index für die spätere Suche
 	private Map<String, SortedSet<Integer>> index;
+	private Preprocessor p = new Preprocessor();
 
 	public InvertedIndex(Corpus corpus) {
 		long start = System.currentTimeMillis();
@@ -30,10 +31,8 @@ public class InvertedIndex implements InformationRetrieval {
 		List<String> works = corpus.getWorks();
 		for (int i = 0; i < works.size(); i++) {
 			String work = works.get(i);
-			// an dieser Stelle würde ein 'richtiger' Tokenizer ansetzen:
-			List<String> tokens = Arrays.asList(work.split("\\s+"));
-			// wir brauchen jedes Token nur einmal
-			SortedSet<String> terms = new TreeSet<String>(tokens);
+			// an dieser Stelle können wir einen 'richtigen' Tokenizer einsetzen:
+			List<String> terms = p.getTerms(work);
 			for (String term : terms) {
 				// wir holen uns die postings-Liste des terms aus dem Index:
 				SortedSet<Integer> postings = invIndex.get(term);
@@ -57,7 +56,8 @@ public class InvertedIndex implements InformationRetrieval {
 	@Override
 	public Set<Integer> search(String query) {
 		long start = System.currentTimeMillis();
-		List<String> queries = Arrays.asList(query.split("\\s+"));
+		// Wir müssen den gleichen Preprocessor benutzen wie oben!
+		List<String> queries = p.getTerms(query);
 		/*
 		 * Wir holen uns zunächst die Postings-Listen der Teilqueries:
 		 */
@@ -70,7 +70,7 @@ public class InvertedIndex implements InformationRetrieval {
 		Set<Integer> result = allPostings.get(0);
 		// ... mit allen weiteren:
 		for (Set<Integer> postings : allPostings) {
-//			result.addAll(postings);// OR-Verknüpfung
+			// result.addAll(postings);// OR-Verknüpfung
 			result.retainAll(postings);// UND-Verknüpfung
 		}
 		System.out.println("Suchdauer: " + (System.currentTimeMillis() - start) + " ms.");

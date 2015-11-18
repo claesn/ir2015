@@ -3,6 +3,10 @@
  */
 package de.uni_koeln.spinfo.textengineering.ir.preprocess;
 
+import static org.junit.Assert.*;
+
+import java.util.List;
+
 import org.junit.Test;
 
 /**
@@ -23,11 +27,17 @@ public class TestPreprocessing {
 		// Testen, ob Tokenizer und Stemmer greifen
 		System.out.println("Tokenizer + Stemmer:");
 		System.out.println("-------------------");
-		
-		/*
-		 * TODO Welche Methoden soll der Preprocessor haben?
-		 */
 
+		Preprocessor p = new Preprocessor();
+		List<String> tokens = p.tokenize(testString);
+		List<String> terms = p.getTerms(testString);
+		List<String> stems = p.getStems(testString);
+
+		// Assertions, z.B.
+		assertTrue("Mehr Tokens als Terms erwartet!", tokens.size() >= terms.size());
+		System.out.println(tokens);
+		System.out.println(terms);
+		System.out.println(stems);
 	}
 
 }
