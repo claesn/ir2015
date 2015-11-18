@@ -7,8 +7,9 @@ h2. package de.uni_koeln.spinfo.textengineering.ir
 
 table(#tableborders){ border: 2px solid #ccc; border-collapse: collapse; border-spacing: 0; width:100%;}.
 | | *Inhalt* | *Ressourcen/Dependencies* | *Literatur* |
-| "basic":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/basic | Korpus, Lineare Suche, Term-Dokument-Matrix | "Shakespeare":http://www.gutenberg.org/cache/epub/100/pg100.txt | "IIR":http://www-nlp.stanford.edu/IR-book/ Kap. 1 |
-| "boole":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/boole | Invertierter Index, Listen-Intersection, Vorverarbeitung, Positional Index, PositionalIntersect | | IIR Kap. 1 + 2 |
+| "basic":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/basic | Korpus, Lineare Suche | "Shakespeare":http://www.gutenberg.org/cache/epub/100/pg100.txt | "IIR":http://www-nlp.stanford.edu/IR-book/ Kap. 1 |
+| "boole":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/boole | Term-Dokument-Matrix, Invertierter Index, Listen-Intersection, Positional Index, PositionalIntersect | | IIR Kap. 1 + 2 |
+| "preprocess":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/preprocess | Vorverarbeitung: Tokenisierung, Stemming | | IIR Kap. 1 + 2 |
 | ranked | Ranked Retrieval: Termgewichtung, Vector Space Model | | IIR Kap. 6 + 7 |
 | evaluation | Evaluation: Precision, Recall, F-Maß | | IIR Kap. 8 |
 | lucene | Lucene: Indexer und Searcher | lucene-core, lucene-queryparser, lucene-analyzers-common (5.1.0.) | "Lucene in Action":http://www.manning.com/hatcher3/ |
