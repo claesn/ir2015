@@ -5,7 +5,9 @@ package de.uni_koeln.spinfo.textengineering.ir.boole;
 
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
 import java.util.Set;
+import java.util.SortedMap;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -63,4 +65,34 @@ public class TestBooleanIR {
 		assertTrue("Mindestens ein Treffer erwartet", result.size() >= 1);
 		System.out.println("Ergebnis für " + query + ": " + result);
 	}
+	
+	@Test
+	public void testPositionalIndex() {
+
+		System.out.println();
+		System.out.println("Positional Index:");
+		System.out.println("-------------------");
+		PositionalIndex posIndex = new PositionalIndex(corpus);
+
+		query = "Brutus Caesar";
+		Set<Integer> result = posIndex.search(query);// einfache Suche (wie bisher)
+		System.out.println("Ergebnis für " + query + ": " + result);
+		assertTrue("ergebnis sollte nicht leer sein!", result.size() > 0);
+
+		query = "to be or not to be";
+		result = posIndex.search(query);// einfache Suche (wie bisher)
+		System.out.println("Ergebnis für " + query + ": " + result);
+		assertTrue("ergebnis sollte nicht leer sein!", result.size() > 0);
+
+		SortedMap<Integer, List<Integer>> posResult;
+		posResult = posIndex.proximitySearch(query, 1);// nur konsekutive Terme
+		assertTrue("ergebnis sollte nicht leer sein!", posResult.size() > 0);
+		System.out.println("Ergebnis für " + query + ": " + posResult);
+
+		posResult = posIndex.proximitySearch(query, 1);// nur konsekutive Terme
+		assertTrue("ergebnis sollte nicht leer sein!", posResult.size() > 0);
+		System.out.println("Ergebnis für " + query + ": " + posResult);
+	}
+
+	
 }
