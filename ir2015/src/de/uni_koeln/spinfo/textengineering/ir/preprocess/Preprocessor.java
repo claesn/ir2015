@@ -47,9 +47,9 @@ public final class Preprocessor {
 		List<String> result = new ArrayList<String>();
 		List<String> terms = getTerms(text);
 		for (String t : terms) {
-
-			// TODO: Stemmer nach stem zu term fragen und stem zu result hinzufügen...
-
+			stemmer.setCurrent(t);
+			stemmer.stem();
+			result.add(stemmer.getCurrent());
 		}
 		return result;
 	}
