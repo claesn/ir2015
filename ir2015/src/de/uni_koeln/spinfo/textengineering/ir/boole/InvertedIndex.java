@@ -14,8 +14,8 @@ import de.uni_koeln.spinfo.textengineering.ir.preprocess.Preprocessor;
 
 public class InvertedIndex implements InformationRetrieval {
 
-	// der invertierte Index für die spätere Suche
-	private Map<String, SortedSet<Integer>> index;
+	// Der Index (protected für Zugriff aus abgeleiteten Klassen)
+	protected Map<String, SortedSet<Integer>> index;
 	private Preprocessor p = new Preprocessor();
 
 	public InvertedIndex(Corpus corpus) {
@@ -55,7 +55,6 @@ public class InvertedIndex implements InformationRetrieval {
 
 	@Override
 	public Set<Integer> search(String query) {
-		long start = System.currentTimeMillis();
 		// Wir müssen den gleichen Preprocessor benutzen wie oben!
 		List<String> queries = p.getTerms(query);
 		/*
@@ -73,7 +72,6 @@ public class InvertedIndex implements InformationRetrieval {
 			// result.addAll(postings);// OR-Verknüpfung
 			result.retainAll(postings);// UND-Verknüpfung
 		}
-		System.out.println("Suchdauer: " + (System.currentTimeMillis() - start) + " ms.");
 		return result;
 	}
 

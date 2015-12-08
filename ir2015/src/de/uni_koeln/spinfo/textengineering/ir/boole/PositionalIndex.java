@@ -15,18 +15,20 @@ import de.uni_koeln.spinfo.textengineering.ir.preprocess.Preprocessor;
 
 /*
  * Erweiterung des invertierten Index: Zusätzlich zu den Werken werden auch
- * jeweils die Positionen des Terms im Werk gespeichert. Der Ursprüngliche
+ * jeweils die Positionen des Terms im Werk gespeichert. Der ursprüngliche
  * Index ist nach wie vor enthalten und kann auf die gewohnte Weise abgefragt werden.
  */
 public class PositionalIndex implements InformationRetrieval {
 
 	private Map<String, SortedMap<Integer, List<Integer>>> posIndex;
 	private Preprocessor p = new Preprocessor();
+	// Zugriff auf tokens & Titel (siehe Methode printSnippets()):
+	private Corpus corpus;
 
 	public PositionalIndex(Corpus corpus) {
 		long start = System.currentTimeMillis();
-		System.out.println("Erstelle Index ...");
 		posIndex = index(corpus);
+		this.corpus = corpus;// Korpus für Ergebnisaufbereitung
 		System.out.println("Index erstellt, Dauer: " + (System.currentTimeMillis() - start) + " ms.");
 	}
 
@@ -69,8 +71,8 @@ public class PositionalIndex implements InformationRetrieval {
 	}
 
 	/*
-	 * Die 'einfache' Index-Suche: Gibt Werke zurück, die (Teil-)queries
-	 * enthalten. Einziger Unterschied: Zugriff auf Postings über keySet().
+	 * Die 'einfache' Index-Suche: Gibt Werke zurück, die (Teil-)queries enthalten. Einziger Unterschied: Zugriff auf
+	 * Postings über keySet().
 	 */
 	public Set<Integer> search(String query) {
 		List<String> queries = p.tokenize(query);
@@ -90,14 +92,13 @@ public class PositionalIndex implements InformationRetrieval {
 	}
 
 	/*
-	 * Suche mit Beschränkung durch 'Nähe'. Grundidee: Positional Index als
-	 * erweiterte Indexstruktur - zuerst wie bisher die Werke ermitteln, in
-	 * denen beide Terme vorkommen, dann die PositionalIntersection
-	 * "zuschalten". Vorteil: einfach "einklinken", ohne den Rest zu verändern.
+	 * Suche mit Beschränkung durch 'Nähe'. Grundidee: Positional Index als erweiterte Indexstruktur - zuerst wie bisher
+	 * die Werke ermitteln, in denen beide Terme vorkommen, dann die PositionalIntersection "zuschalten". Vorteil:
+	 * einfach "einklinken", ohne den Rest zu verändern.
 	 */
 	public SortedMap<Integer, List<Integer>> proximitySearch(String query, int k) {
 		long start = System.currentTimeMillis();
-	List<String> queries = p.getTerms(query);
+		List<String> queries = p.tokenize(query);
 		List<SortedMap<Integer, List<Integer>>> allPostingsMaps = new ArrayList<>();
 		for (String q : queries) {
 			SortedMap<Integer, List<Integer>> postingsMap = posIndex.get(q);
@@ -107,13 +108,49 @@ public class PositionalIndex implements InformationRetrieval {
 		SortedMap<Integer, List<Integer>> result = allPostingsMaps.get(0);
 		// ... mit allen weiteren:
 		for (SortedMap<Integer, List<Integer>> postingsMap : allPostingsMaps) {
-
 			result = Intersection.of(result, postingsMap, k);
+			// alternativ mit Api-Umsetzung:
+			// result = Intersection.ofApi(result, postingsMap, k);
 
 		}
-		System.out.println("Proximity-Suche (range " + k + "): "
-				+ (System.currentTimeMillis() - start) + " ms.");
-		return (SortedMap<Integer, List<Integer>>) result;
+		System.out.println("Proximity-Suche (range " + k + "): " + (System.currentTimeMillis() - start) + " ms.");
+
+		return result;
 	}
 
+	/*
+	 * Ergebnisdarstellung: Ausgabe von Fundstellen und Werktitel
+	 */
+	public void printSnippets(String query, SortedMap<Integer, List<Integer>> result, int maxDistance) {
+		/*
+		 * Da das Ergebnis nur die Position der letzten Teilquery enthält, sollte hier sowohl die Länge der Gesamtquery
+		 * als auch der maximale Abstand berücksichtigt werden, innerhalb dessen die Terme auftreten dürfen, damit alle
+		 * gesuchten Terme in der Ausgabe sichtbar sind.
+		 */
+		int queryLength = p.tokenize(query).size();
+		int range = maxDistance + queryLength;
+
+		for (Integer docId : result.keySet()) {
+			// Werk als Tokenlist für Rekonstruktion der Fundstelle:
+			String work = corpus.getWorks().get(docId);
+			List<String> tokens = p.tokenize(work);
+			// Die einzelnen Fundstellen:
+			List<Integer> positions = result.get(docId);
+			// Werktitel = erste Zeile des Werks
+			String title = (work.trim().substring(0, work.trim().indexOf("\n")));
+			System.out.println(
+					String.format("'%s' %s-mal gefunden in Werk #%s (%s):", query, positions.size(), docId, title));
+			for (Integer pos : positions) {
+				// Textanfang und -ende abfangen (Math.max bzw. Math.min)
+				int start = Math.max(0, pos - range);
+				int end = Math.min(tokens.size(), pos + range);
+				// Ausgabe der Position:
+				System.out.print("Id " + docId + ", pos " + pos + ": ' ... ");
+				for (int i = start; i <= end; i++) {
+					System.out.print(tokens.get(i) + " ");
+				}
+				System.out.println(" ... '");
+			}
+		}
+	}
 }

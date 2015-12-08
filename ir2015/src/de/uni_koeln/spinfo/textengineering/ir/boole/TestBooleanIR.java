@@ -54,7 +54,8 @@ public class TestBooleanIR {
 
 	@Test
 	public void testInvertedIndex() {
-		// Testen, ob lineare Suche ein Ergebnis liefert:
+		// Testen, ob Suche in invertiertem Index ein Ergebnis liefert:
+
 		System.out.println();
 		System.out.println("Inverted Index:");
 		System.out.println("-------------------");
@@ -74,25 +75,29 @@ public class TestBooleanIR {
 		System.out.println("-------------------");
 		PositionalIndex posIndex = new PositionalIndex(corpus);
 
+		/*
+		 * Standard-Suche (wie bisher):
+		 */
 		query = "Brutus Caesar";
-		Set<Integer> result = posIndex.search(query);// einfache Suche (wie bisher)
-		System.out.println("Ergebnis für " + query + ": " + result);
+		Set<Integer> result = posIndex.search(query);
 		assertTrue("ergebnis sollte nicht leer sein!", result.size() > 0);
-
+		System.out.println("Ergebnis für " + query + ": " + result);
+		
+		System.out.println("-------------------");
 		query = "to be or not to be";
-		result = posIndex.search(query);// einfache Suche (wie bisher)
-		System.out.println("Ergebnis für " + query + ": " + result);
+		result = posIndex.search(query);
 		assertTrue("ergebnis sollte nicht leer sein!", result.size() > 0);
-
+		System.out.println("Ergebnis für " + query + ": " + result);
+		
+		/*
+		 * Proximity-Suche:
+		 */
+		System.out.println("-------------------");
 		SortedMap<Integer, List<Integer>> posResult;
 		posResult = posIndex.proximitySearch(query, 1);// nur konsekutive Terme
 		assertTrue("ergebnis sollte nicht leer sein!", posResult.size() > 0);
-		System.out.println("Ergebnis für " + query + ": " + posResult);
-
-		posResult = posIndex.proximitySearch(query, 1);// nur konsekutive Terme
-		assertTrue("ergebnis sollte nicht leer sein!", posResult.size() > 0);
-		System.out.println("Ergebnis für " + query + ": " + posResult);
+		System.out.println("Ergebnis für '" + query + "': " + posResult);
+		posIndex.printSnippets(query, posResult, 1);
 	}
-
 	
 }
