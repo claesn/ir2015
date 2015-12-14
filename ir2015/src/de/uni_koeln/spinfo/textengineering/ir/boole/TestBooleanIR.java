@@ -98,6 +98,13 @@ public class TestBooleanIR {
 		assertTrue("ergebnis sollte nicht leer sein!", posResult.size() > 0);
 		System.out.println("Ergebnis für '" + query + "': " + posResult);
 		posIndex.printSnippets(query, posResult, 1);
+
+		System.out.println("-------------------");
+		query = "Brutus Caesar";
+		posResult = posIndex.proximitySearch(query, 3);
+		assertTrue("ergebnis sollte nicht leer sein!", posResult.size() > 0);
+		System.out.println("Ergebnis für '" + query + "': " + posResult);
+		posIndex.printSnippets(query, posResult, 1);
 	}
 	
 }
