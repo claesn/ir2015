@@ -88,4 +88,9 @@ public class InvertedIndex implements InformationRetrieval {
 		return corpus.getWorks();
 	}
 
+	@Override
+	public List<String> getTerms() {
+		return new ArrayList<String>(index.keySet());
+	}
+
 }

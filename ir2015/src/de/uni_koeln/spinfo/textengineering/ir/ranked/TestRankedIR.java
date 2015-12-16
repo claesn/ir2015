@@ -17,12 +17,18 @@ public class TestRankedIR {
 	private InvertedIndex index;
 	// ... ebenso das Ergebnis, hier nun Document-Objekte statt nur docIds
 	private Set<Document> result;
+	// NEU: wir benutzen einen Ranker, um das Ergebnis zu bewerten:
+	private Ranker ranker;
 
 	@Before
 	public void setUp() throws Exception {
 		corpus = new Corpus("pg100.txt", "1[56][0-9]{2}\n", "\n");
 		index = new InvertedIndex(corpus);
 		query = "brutus caesar";
+		/*
+		 * Ranking initialisieren:
+		 */
+		ranker = new Ranker();
 	}
 
 	@Test
@@ -35,9 +41,12 @@ public class TestRankedIR {
 
 	@Test
 	public void resultRanked() {
-		/*
-		 * TODO Wie bekommen wir hier das Ranking rein?
-		 */
+		result = index.search(query);
+		System.out.println(result.size() + " gerankte Treffer für " + query);
+		assertTrue("Ergebnis sollte nicht leer sein!", result.size() > 0);
+		// Ergebnis ranken:
+		List<Document> rankedResult = ranker.rank(result, new Document(query,"QUERY"), index);
+		print(rankedResult);
 	}
 
 	/*

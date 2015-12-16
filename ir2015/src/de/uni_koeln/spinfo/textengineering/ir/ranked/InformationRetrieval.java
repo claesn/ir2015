@@ -1,5 +1,6 @@
 package de.uni_koeln.spinfo.textengineering.ir.ranked;
 
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -13,5 +14,10 @@ public interface InformationRetrieval {
 
 	// NEU: Rückgabe von Documents (statt docIds)
 	Set<Document> search(String query);
+
+	/*
+	 * Neu: Ergänzungen, damit weiterhin 'generisch' mit dem Interface gearbeitet werden kann:
+	 */
+	List<String> getTerms();
 
 }
