@@ -66,11 +66,31 @@ public class Document {
 	}
 
 	public Double similarity(Document query, InformationRetrieval index) {
-
 		List<Double> queryVec = query.computeVector(index);
 		List<Double> docVec = this.computeVector(index);
+		Double cosinus = cosinus(queryVec, docVec);
+		System.out.println("cos von " + query + " zu " + this + ": " + cosinus);
+		return cosinus;
+	}
 
-		return cosinus(queryVec, docVec); // TODO Berechnung?
+	private Double cosinus(List<Double> queryVec, List<Double> docVec) {
+		return dotProduct(queryVec, docVec) / eucLen(queryVec) * eucLen(docVec);
+	}
+
+	private double eucLen(List<Double> queryVec) {
+		double sum = 0;
+		for (int i = 0; i < queryVec.size(); i++) {
+			sum += Math.pow(queryVec.get(i), 2);
+		}
+		return Math.sqrt(sum);
+	}
+
+	private double dotProduct(List<Double> queryVec, List<Double> docVec) {
+		double sum = 0;
+		for (int i = 0; i < queryVec.size(); i++) {
+			sum += queryVec.get(i) * docVec.get(i);
+		}
+		return sum;
 	}
 
 	private List<Double> computeVector(InformationRetrieval index) {
@@ -79,18 +99,27 @@ public class Document {
 		/*
 		 * Ein Vektor für dieses Dokument ist eine Liste (Länge = Anzahl Terme insgesamt)
 		 */
-		List<Double> vector = new ArrayList<Double>();
+		List<Double> vector = new ArrayList<Double>(terms.size());
 		Double tfIdf;
 		/* ...und dieser Vektor enthält für jeden Term im Vokabular... */
 		for (String term : terms) {
 			/*
 			 * ...den tfIdf-Wert des Terms (Berechnung in einer eigenen Klasse):
 			 */
-			tfIdf = getTfIdf(term);// TODO Berechnung?
+			tfIdf = getTfIdf(term, index);
 			vector.add(tfIdf);
 		}
-
 		return vector;
+	}
+
+	private Double getTfIdf(String term, InformationRetrieval index) {
+		// double tf = 1 + Math.log(getTf(term));
+		double tf = getTf(term);
+		double n = index.getWorks().size();
+		double df = index.getDocFreq(term);
+		double idf = Math.log(n / df);
+		Double tfidf = tf * idf;
+		return tfidf;
 	}
 
 }

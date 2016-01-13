@@ -20,4 +20,8 @@ public interface InformationRetrieval {
 	 */
 	List<String> getTerms();
 
+	List<Document> getWorks();
+
+	Integer getDocFreq(String term);
+
 }

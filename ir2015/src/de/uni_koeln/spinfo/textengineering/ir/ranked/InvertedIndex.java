@@ -93,4 +93,11 @@ public class InvertedIndex implements InformationRetrieval {
 		return new ArrayList<String>(index.keySet());
 	}
 
+	/*
+	 *  Die Dokumentenfrequenz zu einem Term:
+	 */
+	public Integer getDocFreq(String term) {
+		return index.get(term).size();
+	}
+
 }
