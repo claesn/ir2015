@@ -44,12 +44,18 @@ public class Document {
 		return termMap;
 	}
 
+	/**
+	 * @return Liste der Terme in diesem Dokument, benötigt bei der Indexierung.
+	 */
 	public List<String> getTerms() {
 		return new ArrayList<String>(tf.keySet());
 	}
 
-	/*
-	 * Zugriff auf Tf-Werte (für Termgewichtung)
+	/**
+	 * Zugriff auf Tf-Werte (für Termgewichtung).
+	 * 
+	 * @param t
+	 * @return Die Termfrequenz (tf) für t.
 	 */
 	public double getTf(String t) {
 		Integer integer = tf.get(t);
@@ -58,39 +64,30 @@ public class Document {
 
 	/*
 	 * Mit dem Überschreiben der toString()-Methode sorgen wir dafür, dass bei Ausgabe des Document-Objekts mit sysout
-	 * nur der Titel ausgegeben wird
+	 * nur der Titel ausgegeben wird.
+	 * 
+	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return title;
 	}
 
+	/**
+	 * Die Cosinus-Ähnlichkeit dieses Documents zu einer query. Die eigentliche Ähnlichkeitsberechnung delegieren wir an
+	 * eine Vergleichstrategie, implementiert in der Klasse VectorComparison.
+	 * 
+	 * @param query
+	 * @param index
+	 * 
+	 * @return Die Ähnlichkeit des Dokuments zu einer query.
+	 */
 	public Double similarity(Document query, InformationRetrieval index) {
+
 		List<Double> queryVec = query.computeVector(index);
 		List<Double> docVec = this.computeVector(index);
-		Double cosinus = cosinus(queryVec, docVec);
-		System.out.println("cos von " + query + " zu " + this + ": " + cosinus);
-		return cosinus;
-	}
 
-	private Double cosinus(List<Double> queryVec, List<Double> docVec) {
-		return dotProduct(queryVec, docVec) / eucLen(queryVec) * eucLen(docVec);
-	}
-
-	private double eucLen(List<Double> queryVec) {
-		double sum = 0;
-		for (int i = 0; i < queryVec.size(); i++) {
-			sum += Math.pow(queryVec.get(i), 2);
-		}
-		return Math.sqrt(sum);
-	}
-
-	private double dotProduct(List<Double> queryVec, List<Double> docVec) {
-		double sum = 0;
-		for (int i = 0; i < queryVec.size(); i++) {
-			sum += queryVec.get(i) * docVec.get(i);
-		}
-		return sum;
+		return VectorComparison.compare(queryVec, docVec);
 	}
 
 	private List<Double> computeVector(InformationRetrieval index) {
@@ -106,20 +103,19 @@ public class Document {
 			/*
 			 * ...den tfIdf-Wert des Terms (Berechnung in einer eigenen Klasse):
 			 */
-			tfIdf = getTfIdf(term, index);
+			tfIdf = TermWeighting.tfIdf(term, this, index);
 			vector.add(tfIdf);
 		}
 		return vector;
 	}
 
-	private Double getTfIdf(String term, InformationRetrieval index) {
-		// double tf = 1 + Math.log(getTf(term));
-		double tf = getTf(term);
-		double n = index.getWorks().size();
-		double df = index.getDocFreq(term);
-		double idf = Math.log(n / df);
-		Double tfidf = tf * idf;
-		return tfidf;
+	/**
+	 * Zugriff auf Titel (für Erstellung eines Dummy-GoldStandard).
+	 * 
+	 * @return Der Titel des Dokuments.
+	 */
+	public String getTitle() {
+		return this.title;
 	}
 
 }
