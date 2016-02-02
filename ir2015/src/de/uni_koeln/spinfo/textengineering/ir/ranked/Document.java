@@ -13,6 +13,10 @@ public class Document {
 	private String title;
 	private Map<String, Integer> tf;
 
+	public Document() {
+		// expliziter default-Konstruktor, damit Document abgeleitet werden kann
+	}
+
 	public Document(String text, String title) {
 		this.text = text;
 		this.title = title;
@@ -107,6 +111,15 @@ public class Document {
 			vector.add(tfIdf);
 		}
 		return vector;
+	}
+
+	/**
+	 * Zugriff auf den Text
+	 * 
+	 * @return Der Titel des Dokuments.
+	 */
+	public String getText() {
+		return this.text;
 	}
 
 	/**
