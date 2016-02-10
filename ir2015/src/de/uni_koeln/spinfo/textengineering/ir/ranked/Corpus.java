@@ -49,13 +49,18 @@ public class Corpus {
 		}
 	}
 
-	// NEU: Korpus als Sammlung von Document-Objekten
+	// Korpus als Sammlung von Document-Objekten
 	public List<Document> getWorks() {
 		return works;
 	}
 
 	public String getText() {
 		return text;
+	}
+
+	// NEU: Zugriff auf die docIds (für die Erstellung von Lucene-Docs)
+	public int getDocId(Document work) {
+		return this.works.indexOf(work);
 	}
 
 }
