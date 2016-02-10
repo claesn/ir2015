@@ -14,4 +14,4 @@ table(#tableborders){ border: 2px solid #ccc; border-collapse: collapse; border-
 | "ranked":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/ranked | Ranked Retrieval: Termgewichtung, Vector Space Model | | IIR Kap. 6 + 7 |
 | "evaluation":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/evaluation | Evaluation: Precision, Recall, F-Maß | | IIR Kap. 8 |
 | "web":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/web | Crawler, WebDocument | "Apache Xerxes":http://xerces.apache.org/, "Nekohtml":http://nekohtml.sourceforge.net/ | IIR Kap. 19 + 20 |
-| lucene | Lucene: Indexer und Searcher | lucene-core, lucene-queryparser, lucene-analyzers-common (5.1.0.) | "Lucene in Action":http://www.manning.com/hatcher3/ |
+| "lucene":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/lucene | Lucene: Indexer und Searcher | "lucene-core, lucene-queryparser, lucene-analyzers-common (5.4.1)"::https://lucene.apache.org/core/ | "Lucene in Action":http://www.manning.com/hatcher3/ |
