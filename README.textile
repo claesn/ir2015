@@ -7,7 +7,7 @@ h2. package de.uni_koeln.spinfo.textengineering.ir
 
 table(#tableborders){ border: 2px solid #ccc; border-collapse: collapse; border-spacing: 0; width:100%;}.
 | | *Inhalt* | *Ressourcen/Dependencies* | *Literatur* |
-| "basic":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/basic | Korpus, Lineare Suche | "Shakespeare":http://www.gutenberg.org/cache/epub/100/pg100.txt | "IIR":http://www-nlp.stanford.edu/IR-book/ Kap. 1":http://nlp.stanford.edu/IR-book/html/htmledition/boolean-retrieval-1.html |
+| "basic":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/basic | Korpus, Lineare Suche | "Shakespeare":http://www.gutenberg.org/cache/epub/100/pg100.txt | "IIR":http://www-nlp.stanford.edu/IR-book/ Kap. 1 |
 | "boole":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/boole | Term-Dokument-Matrix, Invertierter Index, Listen-Intersection, Positional Index, PositionalIntersect | | "IIR":http://www-nlp.stanford.edu/IR-book/ Kap. 1 + 2 |
 | "preprocess":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/preprocess | Vorverarbeitung: Tokenisierung, Stemming | "snowball stemmer":http://snowball.tartarus.org/ | "IIR":http://www-nlp.stanford.edu/IR-book/ Kap. 1 + 2 |
 | "tolerant":https://github.com/claesn/ir2015/tree/master/ir2015/src/de/uni_koeln/spinfo/textengineering/ir/tolerant | Tolerant Retrieval: Levenshtein, Soundex | "Apache Commons Lang":https://commons.apache.org/proper/commons-lang/, "Apache Commons Codec":https://commons.apache.org/proper/commons-codec/ | "IIR":http://www-nlp.stanford.edu/IR-book/ Kap. 3 |
